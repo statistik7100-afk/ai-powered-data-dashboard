@@ -65,11 +65,11 @@ Diagram di bawah ini memetakan alur pemrosesan dari antarmuka pengguna hingga in
 ```mermaid
 graph TD
     %% Entities
-    Client[Browser / UI Client<br/>(Tailwind CSS)]
-    Frontend[Next.js 14 Client Components<br/>(CSV Parsing & Validation)]
-    Backend[Next.js API Routes<br/>(Serverless Proxy)]
-    OpenAI[OpenAI API<br/>(LLM Engine)]
-    ChartEngine[Charting Library<br/>(Recharts / Chart.js)]
+    Client["Browser / UI Client<br/>(Tailwind CSS)"]
+    Frontend["Next.js 14 Client Components<br/>(CSV Parsing & Validation)"]
+    Backend["Next.js API Routes<br/>(Serverless Proxy)"]
+    OpenAI["OpenAI API<br/>(LLM Engine)"]
+    ChartEngine["Charting Library<br/>(Recharts / Chart.js)"]
 
     %% Flow
     Client -- "1. Upload CSV (Drag & Drop)" --> Frontend
