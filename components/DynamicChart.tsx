@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { useDashboard } from "@/context/DashboardContext";
 import {
   BarChart,
   Bar,
@@ -24,15 +25,27 @@ interface DynamicChartProps {
   yAxisKey: string;
 }
 
-const COLORS = ["#6366f1", "#14b8a6", "#f59e0b", "#ef4444", "#8b5cf6", "#ec4899"];
+const GOOGLE_CHART_COLORS = [
+  "#1A73E8", // Google Classic Blue
+  "#129EAF", // Google Teal
+  "#E37400", // Warm Amber
+  "#D93025", // Google Coral Red
+  "#9334E6", // Vivid Purple
+  "#1E8E3E", // Google Green
+];
 
 const CustomTooltip = ({ active, payload, label }: any) => {
   if (active && payload && payload.length) {
     return (
-      <div className="glass-card rounded-lg border border-white/10 bg-[#0f172a]/90 p-3 shadow-xl backdrop-blur-md">
-        <p className="text-xs font-semibold text-slate-300">{label}</p>
-        <p className="text-sm font-bold text-indigo-400">
-          {payload[0].name}: <span className="text-slate-100">{payload[0].value}</span>
+      <div className="m3-card-elevated border border-[var(--md-sys-color-border-subtle)] bg-[var(--md-sys-color-surface)] p-3 shadow-lg rounded-xl">
+        <p className="text-xs font-medium text-[var(--md-sys-color-on-surface-variant)]">{label}</p>
+        <p className="mt-1 text-sm font-bold text-[var(--md-sys-color-primary)]">
+          {payload[0].name}:{" "}
+          <span className="text-[var(--md-sys-color-on-surface)] font-semibold">
+            {typeof payload[0].value === "number"
+              ? payload[0].value.toLocaleString()
+              : payload[0].value}
+          </span>
         </p>
       </div>
     );
@@ -46,10 +59,12 @@ const DynamicChart: React.FC<DynamicChartProps> = ({
   xAxisKey,
   yAxisKey,
 }) => {
+  const { language } = useDashboard();
+  
   if (!data || data.length === 0) {
     return (
-      <div className="flex h-full items-center justify-center text-slate-500 italic">
-        No data available to visualize.
+      <div className="flex h-full items-center justify-center text-[var(--md-sys-color-on-surface-variant)] italic">
+        {language === "id" ? "Tidak ada data untuk divisualisasikan." : "No data available to visualize."}
       </div>
     );
   }
@@ -58,88 +73,93 @@ const DynamicChart: React.FC<DynamicChartProps> = ({
     switch (type) {
       case "line":
         return (
-          <LineChart data={data}>
-            <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" vertical={false} />
+          <LineChart data={data} margin={{ top: 10, right: 20, left: 0, bottom: 20 }}>
+            <CartesianGrid strokeDasharray="3 3" stroke="var(--md-sys-color-border-subtle)" vertical={false} />
             <XAxis
               dataKey={xAxisKey}
-              stroke="#64748b"
-              fontSize={10}
+              stroke="var(--md-sys-color-outline)"
+              fontSize={11}
               tickLine={false}
               axisLine={false}
               dy={10}
             />
             <YAxis
-              stroke="#64748b"
-              fontSize={10}
+              stroke="var(--md-sys-color-outline)"
+              fontSize={11}
               tickLine={false}
               axisLine={false}
-              dx={-10}
+              dx={-8}
             />
-            <Tooltip content={<CustomTooltip />} cursor={{ stroke: 'rgba(99, 102, 241, 0.2)', strokeWidth: 2 }} />
+            <Tooltip content={<CustomTooltip />} cursor={{ stroke: 'var(--md-sys-color-primary)', strokeWidth: 1.5, strokeDasharray: '4 4' }} />
             <Line
               type="monotone"
               dataKey={yAxisKey}
-              stroke="#6366f1"
+              stroke="#1A73E8"
               strokeWidth={3}
-              dot={{ r: 4, fill: "#6366f1", strokeWidth: 2, stroke: "#0a0f1e" }}
-              activeDot={{ r: 6, strokeWidth: 0 }}
-              animationDuration={1500}
+              dot={{ r: 4, fill: "#1A73E8", strokeWidth: 2, stroke: "var(--md-sys-color-surface)" }}
+              activeDot={{ r: 6, fill: "#0B57D0", strokeWidth: 2, stroke: "var(--md-sys-color-surface)" }}
+              animationDuration={1200}
             />
           </LineChart>
         );
       case "pie":
         return (
-          <PieChart>
+          <PieChart margin={{ top: 10, right: 10, left: 10, bottom: 20 }}>
             <Pie
               data={data}
               dataKey={yAxisKey}
               nameKey={xAxisKey}
               cx="50%"
               cy="50%"
-              innerRadius={60}
-              outerRadius={80}
-              paddingAngle={5}
-              animationDuration={1500}
+              innerRadius={55}
+              outerRadius={85}
+              paddingAngle={4}
+              animationDuration={1200}
             >
               {data.map((entry, index) => (
-                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} stroke="none" />
+                <Cell key={`cell-${index}`} fill={GOOGLE_CHART_COLORS[index % GOOGLE_CHART_COLORS.length]} stroke="var(--md-sys-color-surface)" strokeWidth={2} />
               ))}
             </Pie>
             <Tooltip content={<CustomTooltip />} />
-            <Legend verticalAlign="bottom" height={36} iconType="circle" wrapperStyle={{ fontSize: '10px', color: '#64748b', paddingTop: '10px' }} />
+            <Legend
+              verticalAlign="bottom"
+              height={36}
+              iconType="circle"
+              wrapperStyle={{ fontSize: '11px', color: 'var(--md-sys-color-on-surface-variant)', paddingTop: '12px' }}
+            />
           </PieChart>
         );
       case "bar":
       default:
         return (
-          <BarChart data={data}>
-            <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" vertical={false} />
+          <BarChart data={data} margin={{ top: 10, right: 20, left: 0, bottom: 20 }}>
+            <CartesianGrid strokeDasharray="3 3" stroke="var(--md-sys-color-border-subtle)" vertical={false} />
             <XAxis
               dataKey={xAxisKey}
-              stroke="#64748b"
-              fontSize={10}
+              stroke="var(--md-sys-color-outline)"
+              fontSize={11}
               tickLine={false}
               axisLine={false}
               dy={10}
             />
             <YAxis
-              stroke="#64748b"
-              fontSize={10}
+              stroke="var(--md-sys-color-outline)"
+              fontSize={11}
               tickLine={false}
               axisLine={false}
-              dx={-10}
+              dx={-8}
             />
-            <Tooltip content={<CustomTooltip />} cursor={{ fill: 'rgba(255,255,255,0.03)' }} />
+            <Tooltip content={<CustomTooltip />} cursor={{ fill: 'var(--md-sys-color-surface-container)' }} />
             <Bar
               dataKey={yAxisKey}
-              fill="url(#colorGradient)"
-              radius={[4, 4, 0, 0]}
-              animationDuration={1500}
+              fill="url(#m3ColorGradient)"
+              radius={[6, 6, 0, 0]}
+              animationDuration={1200}
             />
-             <defs>
-              <linearGradient id="colorGradient" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="#6366f1" stopOpacity={1} />
-                <stop offset="100%" stopColor="#14b8a6" stopOpacity={1} />
+            <defs>
+              <linearGradient id="m3ColorGradient" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="#1A73E8" stopOpacity={1} />
+                <stop offset="100%" stopColor="#129EAF" stopOpacity={0.85} />
               </linearGradient>
             </defs>
           </BarChart>
@@ -148,7 +168,7 @@ const DynamicChart: React.FC<DynamicChartProps> = ({
   };
 
   return (
-    <div className="h-full w-full min-h-[300px]">
+    <div className="h-full w-full min-h-[320px]">
       <ResponsiveContainer width="100%" height="100%">
         {renderChart()}
       </ResponsiveContainer>

@@ -1,0 +1,11 @@
+order_date,region,product_category,units_sold,gross_revenue,net_profit,customer_segment
+2026-01-05,DKI Jakarta,Elektronik,15,45000000,6750000,B2B
+2026-01-06,Jawa Barat,Makanan Olahan,120,6000000,1200000,Retail
+2026-01-08,Surabaya,Pakaian & Tekstil,65,13000000,2600000,Retail
+2026-01-10,DKI Jakarta,Elektronik,8,24000000,3600000,Enterprise
+2026-01-12,Medan,Makanan Olahan,95,4750000,950000,Retail
+2026-01-14,Bali,Kerajinan & Seni,42,8400000,2100000,Retail
+2026-01-15,DKI Jakarta,Jasa & Konsultasi,4,32000000,9600000,Enterprise
+2026-01-18,Jawa Barat,Elektronik,22,66000000,9900000,B2B
+2026-01-20,Surabaya,Makanan Olahan,150,7500000,1500000,Retail
+2026-01-22,Semarang,Pakaian & Tekstil,50,10000000,2000000,Retail

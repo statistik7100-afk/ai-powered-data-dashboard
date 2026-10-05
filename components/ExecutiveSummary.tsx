@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { useDashboard } from "@/context/DashboardContext";
 
 interface ExecutiveSummaryProps {
   summary: string;
@@ -8,23 +9,35 @@ interface ExecutiveSummaryProps {
 }
 
 const ExecutiveSummary: React.FC<ExecutiveSummaryProps> = ({ summary, isAnalyzing }) => {
-  // If no summary and not analyzing, don't render content but keep the shell? 
-  // Actually, the parent handles the shell. This component handles the content.
+  const { language } = useDashboard();
+  
+  const t = {
+    id: {
+      generating: "Membuat Laporan Eksekutif...",
+      insight: "Analisis Insight AI",
+      tags: ["Siap Presentasi", "Berbasis Data", "Terverifikasi Gemini AI"]
+    },
+    en: {
+      generating: "Generating Executive Report...",
+      insight: "AI Analysis Insight",
+      tags: ["Board Ready", "Data Driven", "Gemini AI Verified"]
+    }
+  }[language];
 
   if (isAnalyzing) {
     return (
       <div className="space-y-4">
         <div className="flex items-center gap-2">
-          <div className="h-2 w-2 animate-pulse rounded-full bg-indigo-500" />
-          <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500">
-            Generating Report...
+          <div className="h-2 w-2 animate-pulse rounded-full bg-[var(--md-sys-color-primary)]" />
+          <p className="text-[11px] font-semibold uppercase tracking-wider text-[var(--md-sys-color-primary)]">
+            {t.generating}
           </p>
         </div>
         <div className="space-y-3">
-          <div className="h-4 w-full animate-pulse rounded-md bg-white/5" />
-          <div className="h-4 w-[90%] animate-pulse rounded-md bg-white/5" />
-          <div className="h-4 w-[95%] animate-pulse rounded-md bg-white/5" />
-          <div className="h-4 w-[85%] animate-pulse rounded-md bg-white/5" />
+          <div className="h-4 w-full animate-pulse rounded-lg bg-[var(--md-sys-color-surface-container-high)]" />
+          <div className="h-4 w-[92%] animate-pulse rounded-lg bg-[var(--md-sys-color-surface-container-high)]" />
+          <div className="h-4 w-[96%] animate-pulse rounded-lg bg-[var(--md-sys-color-surface-container-high)]" />
+          <div className="h-4 w-[85%] animate-pulse rounded-lg bg-[var(--md-sys-color-surface-container-high)]" />
         </div>
       </div>
     );
@@ -32,17 +45,17 @@ const ExecutiveSummary: React.FC<ExecutiveSummaryProps> = ({ summary, isAnalyzin
 
   if (!summary) return null;
 
-  // Split summary into paragraphs if it's long
+  // Split summary into paragraphs
   const paragraphs = summary.split("\n\n").filter(p => p.trim() !== "");
 
   return (
-    <div className="animate-in fade-in slide-in-from-bottom-4 duration-1000">
-      <div className="mb-4 flex items-center gap-2">
-        <span className="flex h-5 w-5 items-center justify-center rounded-full bg-teal-500/10 text-[10px] text-teal-400">
+    <div className="space-y-5 animate-in fade-in slide-in-from-bottom-2 duration-500">
+      <div className="flex items-center gap-2">
+        <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[var(--md-sys-color-primary-container)] text-xs text-[var(--md-sys-color-primary)] shadow-2xs">
           ✦
         </span>
-        <h3 className="text-xs font-bold uppercase tracking-widest text-slate-400">
-          AI Analysis Insight
+        <h3 className="text-xs font-bold uppercase tracking-wider text-[var(--md-sys-color-on-surface-variant)]">
+          {t.insight}
         </h3>
       </div>
       
@@ -50,18 +63,18 @@ const ExecutiveSummary: React.FC<ExecutiveSummaryProps> = ({ summary, isAnalyzin
         {paragraphs.map((para, idx) => (
           <p 
             key={idx} 
-            className="text-sm leading-relaxed text-slate-300 first-letter:text-lg first-letter:font-semibold first-letter:text-indigo-400"
+            className="text-sm leading-relaxed text-[var(--md-sys-color-on-surface)] first-letter:text-lg first-letter:font-bold first-letter:text-[var(--md-sys-color-primary)]"
           >
             {para}
           </p>
         ))}
       </div>
 
-      <div className="mt-8 flex flex-wrap gap-2">
-        {["Enterprise Ready", "Data Driven", "AI Verified"].map((tag) => (
+      <div className="pt-4 border-t border-[var(--md-sys-color-border-subtle)] flex flex-wrap gap-2">
+        {t.tags.map((tag) => (
           <span 
             key={tag} 
-            className="rounded-md border border-white/5 bg-white/[0.03] px-2 py-1 text-[9px] font-medium text-slate-500"
+            className="rounded-full border border-[var(--md-sys-color-outline-variant)] bg-[var(--md-sys-color-surface-container-low)] px-3 py-1 text-[11px] font-medium text-[var(--md-sys-color-on-surface-variant)]"
           >
             {tag}
           </span>

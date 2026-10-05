@@ -1,0 +1,15 @@
+{
+  "executiveSummary": "[MOCK DATA - DEVELOPMENT MODE]\n\nAnalisis dataset Anda menunjukkan pola transaksi yang stabil dengan puncak aktivitas pada akhir pekan. Kolom utama memiliki distribusi yang merata dengan beberapa anomali minor pada entri bernilai tinggi. Sistem merekomendasikan visualisasi menggunakan diagram batang (bar chart) untuk menyajikan perbandingan kategori secara optimal.\n\nCatatan: Ini adalah data tiruan (mock data) lokal untuk menghemat kuota API Gemini Anda selama proses pengembangan UI.",
+  "chartRecommendation": {
+    "type": "bar",
+    "xAxisKey": "kategori",
+    "yAxisKey": "nilai",
+    "chartData": [
+      { "kategori": "Item A", "nilai": 120 },
+      { "kategori": "Item B", "nilai": 250 },
+      { "kategori": "Item C", "nilai": 180 },
+      { "kategori": "Item D", "nilai": 90 },
+      { "kategori": "Item E", "nilai": 300 }
+    ]
+  }
+}

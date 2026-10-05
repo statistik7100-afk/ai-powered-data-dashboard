@@ -1,0 +1,9 @@
+sku_code,item_name,warehouse_location,stock_on_hand,safety_stock_level,turnover_days,damaged_ratio
+SKU-EL-01,Laptop Ultra 14,Gudang Cakung Jakarta,45,50,14.5,0.8
+SKU-EL-02,Monitor 27 Inch,Gudang Cakung Jakarta,120,60,22.0,1.2
+SKU-FD-01,Minyak Goreng 2L,Gudang Surabaya,850,500,6.2,0.3
+SKU-FD-02,Beras Premium 5kg,Gudang Surabaya,1200,600,4.8,0.2
+SKU-TX-01,Kemeja Katun Polos,Gudang Bandung,320,200,18.0,1.5
+SKU-TX-02,Celana Chino Slim,Gudang Bandung,110,150,25.4,2.1
+SKU-MD-01,Vitamin C 500mg,Gudang Medan,450,250,11.2,0.4
+SKU-MD-02,Masker Medis 3-Ply,Gudang Medan,90,150,8.5,0.6

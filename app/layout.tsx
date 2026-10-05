@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { DashboardProvider } from "@/context/DashboardContext";
+import TopAppBar from "@/components/TopAppBar";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -10,9 +11,9 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "AI Data Dashboard | Transform CSV into Executive Insights",
+  title: "AI Analytics Studio | Google Material 3 Data Dashboard",
   description:
-    "An enterprise-grade AI-powered analytics dashboard. Upload any CSV and receive interactive visualizations and executive summaries in seconds.",
+    "An enterprise-grade AI analytics dashboard built with Google Material Design 3 and powered by Google Gemini 1.5 Pro.",
 };
 
 export default function RootLayout({
@@ -21,64 +22,51 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={inter.variable}>
-      <body className="bg-gradient-mesh min-h-screen">
-        {/* Top Navigation Bar */}
-        <header className="sticky top-0 z-50 border-b border-white/[0.06] bg-[#0a0f1e]/80 backdrop-blur-xl">
-          <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
-            {/* Logo & Brand */}
-            <div className="flex items-center gap-3">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-indigo-500 to-teal-500 shadow-lg">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="currentColor"
-                  className="h-4 w-4 text-white"
-                >
-                  <path d="M18.375 2.25c-1.035 0-1.875.84-1.875 1.875v15.75c0 1.035.84 1.875 1.875 1.875h.75c1.035 0 1.875-.84 1.875-1.875V4.125c0-1.036-.84-1.875-1.875-1.875h-.75ZM9.75 8.625c0-1.036.84-1.875 1.875-1.875h.75c1.036 0 1.875.84 1.875 1.875v11.25c0 1.035-.84 1.875-1.875 1.875h-.75a1.875 1.875 0 0 1-1.875-1.875V8.625ZM3 13.125c0-1.036.84-1.875 1.875-1.875h.75c1.036 0 1.875.84 1.875 1.875v6.75c0 1.035-.84 1.875-1.875 1.875h-.75A1.875 1.875 0 0 1 3 19.875v-6.75Z" />
-                </svg>
-              </div>
-              <span className="text-sm font-semibold tracking-tight text-slate-100">
-                AI Dashboard
-              </span>
-              <span className="rounded-full bg-indigo-500/10 px-2 py-0.5 text-[10px] font-medium uppercase tracking-widest text-indigo-400 ring-1 ring-indigo-500/20">
-                Beta
-              </span>
-            </div>
-
-            {/* Nav Links */}
-            <nav className="hidden items-center gap-6 md:flex">
-              {["Dashboard", "Reports", "Settings"].map((item) => (
-                <a
-                  key={item}
-                  href="#"
-                  className="text-sm text-slate-400 transition-colors duration-150 hover:text-slate-100"
-                >
-                  {item}
-                </a>
-              ))}
-            </nav>
-
-            {/* CTA */}
-            <div className="flex items-center gap-3">
-              <div className="h-2 w-2 animate-pulse rounded-full bg-teal-400" />
-              <span className="hidden text-xs text-slate-400 sm:block">
-                Ready
-              </span>
-            </div>
-          </div>
-        </header>
-
-        {/* Page Content */}
+    <html lang="id" className={inter.variable} suppressHydrationWarning>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                try {
+                  var theme = localStorage.getItem('app_theme');
+                  if (theme === 'dark') {
+                    document.documentElement.classList.add('dark');
+                    document.documentElement.setAttribute('data-theme', 'dark');
+                  } else {
+                    document.documentElement.classList.remove('dark');
+                    document.documentElement.setAttribute('data-theme', 'light');
+                  }
+                } catch (e) {}
+              })();
+            `,
+          }}
+        />
+      </head>
+      <body className="min-h-screen bg-[var(--md-sys-color-background)] text-[var(--md-sys-color-on-surface)] selection:bg-[var(--md-sys-color-primary-container)] selection:text-[var(--md-sys-color-on-primary-container)]">
         <DashboardProvider>
-          <main className="mx-auto max-w-7xl px-6 py-10">{children}</main>
-        </DashboardProvider>
+          {/* Top Navigation Bar (M3 Top App Bar) */}
+          <TopAppBar />
 
-        {/* Footer */}
-        <footer className="mt-16 border-t border-white/[0.06] py-6 text-center text-xs text-slate-600">
-          AI Data Dashboard &copy; {new Date().getFullYear()} &mdash; Built with
-          Next.js 14, OpenAI & Tailwind CSS
-        </footer>
+          {/* Main Content Canvas */}
+          <main className="mx-auto max-w-7xl px-4 sm:px-6 py-8 md:py-10">
+            {children}
+          </main>
+
+          {/* Footer (M3 Editorial Style) */}
+          <footer className="mt-20 border-t border-[var(--md-sys-color-border-subtle)] bg-[var(--md-sys-color-surface)] py-8 text-center text-xs text-[var(--md-sys-color-on-surface-variant)] transition-colors">
+            <div className="mx-auto max-w-7xl px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+              <div className="flex items-center gap-2">
+                <span className="font-semibold text-[var(--md-sys-color-on-surface)]">AI Analytics Studio</span>
+                <span>&bull;</span>
+                <span>Material Design 3 (M3)</span>
+              </div>
+              <p>
+                Powered by Google Gemini 1.5 Pro &mdash; Built with Next.js & Tailwind CSS
+              </p>
+            </div>
+          </footer>
+        </DashboardProvider>
       </body>
     </html>
   );

@@ -1,14 +1,134 @@
 @import "tailwindcss";
 
-:root {
-  --bg-base: #0a0f1e;
-  --bg-surface: #111827;
-  --bg-card: rgba(255, 255, 255, 0.04);
-  --border-subtle: rgba(255, 255, 255, 0.08);
-  --accent-primary: #6366f1;
-  --accent-secondary: #14b8a6;
-  --text-primary: #f1f5f9;
-  --text-muted: #94a3b8;
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ── GOOGLE MATERIAL DESIGN 3 (M3) DESIGN TOKENS ─────────────────── */
+:root,
+[data-theme="light"] {
+  color-scheme: light;
+
+  /* Surface & Canvas (Light Theme - Default Utama) */
+  --md-sys-color-background: #f8f9fa;
+  --md-sys-color-surface: #ffffff;
+  --md-sys-color-surface-dim: #ded8e1;
+  --md-sys-color-surface-container-lowest: #ffffff;
+  --md-sys-color-surface-container-low: #f7f9fc;
+  --md-sys-color-surface-container: #f0f4f9;
+  --md-sys-color-surface-container-high: #e9eef6;
+  --md-sys-color-surface-container-highest: #e1e7f0;
+
+  /* Typography / Text Colors */
+  --md-sys-color-on-surface: #1f1f1f;
+  --md-sys-color-on-surface-variant: #444746;
+  --md-sys-color-text-subtle: #747775;
+
+  /* Primary Brand (Google Blue) */
+  --md-sys-color-primary: #0b57d0;
+  --md-sys-color-on-primary: #ffffff;
+  --md-sys-color-primary-container: #d3e3fd;
+  --md-sys-color-on-primary-container: #041e49;
+
+  /* Secondary (Teal / Sage) */
+  --md-sys-color-secondary: #006a6a;
+  --md-sys-color-on-secondary: #ffffff;
+  --md-sys-color-secondary-container: #cce8e7;
+  --md-sys-color-on-secondary-container: #002020;
+
+  /* Outlines & Borders */
+  --md-sys-color-outline: #747775;
+  --md-sys-color-outline-variant: #c4c7c5;
+  --md-sys-color-border-subtle: #e0e2ec;
+
+  /* Semantic Alerts */
+  --md-sys-color-error: #ba1a1a;
+  --md-sys-color-error-container: #ffdad6;
+  --md-sys-color-on-error-container: #410002;
+  --md-sys-color-success: #137333;
+  --md-sys-color-success-container: #ceead6;
+  --md-sys-color-on-success-container: #0d5223;
+  --md-sys-color-warning: #b06000;
+  --md-sys-color-warning-container: #ffdfba;
+  --md-sys-color-on-warning-container: #341b00;
+
+  /* Shadows (Tonal Ambient Elevation) */
+  --md-elevation-1: 0 1px 3px 0 rgba(60, 64, 67, 0.12), 0 1px 2px 0 rgba(60, 64, 67, 0.08);
+  --md-elevation-2: 0 2px 6px 2px rgba(60, 64, 67, 0.12), 0 1px 2px 0 rgba(60, 64, 67, 0.08);
+  --md-elevation-3: 0 4px 12px 3px rgba(60, 64, 67, 0.12), 0 1px 3px 0 rgba(60, 64, 67, 0.08);
+
+  /* Legacy variables compatibility */
+  --bg-base: #f8f9fa;
+  --bg-surface: #ffffff;
+  --bg-card: #ffffff;
+  --border-subtle: #e0e2ec;
+  --accent-primary: #0b57d0;
+  --accent-secondary: #006a6a;
+  --text-primary: #1f1f1f;
+  --text-muted: #444746;
+}
+
+/* ── Dark Mode Overrides (Optional / Toggleable) ─────────────── */
+.dark,
+[data-theme="dark"],
+:root.dark {
+  color-scheme: dark;
+
+  /* Surface & Canvas (Dark Theme) */
+  --md-sys-color-background: #111318;
+  --md-sys-color-surface: #191c20;
+  --md-sys-color-surface-dim: #111318;
+  --md-sys-color-surface-container-lowest: #0c0e12;
+  --md-sys-color-surface-container-low: #191c20;
+  --md-sys-color-surface-container: #1e2024;
+  --md-sys-color-surface-container-high: #282a2f;
+  --md-sys-color-surface-container-highest: #33353a;
+
+  /* Typography / Text Colors */
+  --md-sys-color-on-surface: #e2e2e6;
+  --md-sys-color-on-surface-variant: #c4c7c5;
+  --md-sys-color-text-subtle: #8e918f;
+
+  /* Primary Brand (Google Blue for Dark Mode) */
+  --md-sys-color-primary: #a8c7fa;
+  --md-sys-color-on-primary: #042e6b;
+  --md-sys-color-primary-container: #0842a0;
+  --md-sys-color-on-primary-container: #d3e3fd;
+
+  /* Secondary (Teal) */
+  --md-sys-color-secondary: #4cd9d4;
+  --md-sys-color-on-secondary: #003737;
+  --md-sys-color-secondary-container: #004f4f;
+  --md-sys-color-on-secondary-container: #cce8e7;
+
+  /* Outlines & Borders */
+  --md-sys-color-outline: #8e918f;
+  --md-sys-color-outline-variant: #444746;
+  --md-sys-color-border-subtle: #2f3238;
+
+  /* Semantic Alerts */
+  --md-sys-color-error: #ffb4ab;
+  --md-sys-color-error-container: #93000a;
+  --md-sys-color-on-error-container: #ffdad6;
+  --md-sys-color-success: #81c995;
+  --md-sys-color-success-container: #0d5223;
+  --md-sys-color-on-success-container: #ceead6;
+  --md-sys-color-warning: #ffb77c;
+  --md-sys-color-warning-container: #532b00;
+  --md-sys-color-on-warning-container: #ffdfba;
+
+  /* Elevation */
+  --md-elevation-1: 0 1px 3px 1px rgba(0, 0, 0, 0.4);
+  --md-elevation-2: 0 2px 6px 2px rgba(0, 0, 0, 0.5);
+  --md-elevation-3: 0 4px 12px 3px rgba(0, 0, 0, 0.6);
+
+  /* Legacy variables compatibility */
+  --bg-base: #111318;
+  --bg-surface: #191c20;
+  --bg-card: #191c20;
+  --border-subtle: #2f3238;
+  --accent-primary: #a8c7fa;
+  --accent-secondary: #4cd9d4;
+  --text-primary: #e2e2e6;
+  --text-muted: #c4c7c5;
 }
 
 * {
@@ -19,39 +139,80 @@ html,
 body {
   margin: 0;
   padding: 0;
-  background-color: var(--bg-base);
-  color: var(--text-primary);
-  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  min-height: 100vh;
+  background-color: var(--md-sys-color-background) !important;
+  color: var(--md-sys-color-on-surface) !important;
+  font-family: -apple-system, BlinkMacSystemFont, "Google Sans", "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
   -webkit-font-smoothing: antialiased;
+  transition: background-color 0.2s cubic-bezier(0.2, 0, 0, 1), color 0.2s cubic-bezier(0.2, 0, 0, 1);
 }
 
 /* Scrollbar styling */
 ::-webkit-scrollbar {
-  width: 6px;
+  width: 8px;
+  height: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: var(--bg-surface);
+  background: var(--md-sys-color-surface-container);
 }
 ::-webkit-scrollbar-thumb {
-  background: #334155;
-  border-radius: 3px;
+  background: var(--md-sys-color-outline-variant);
+  border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #475569;
+  background: var(--md-sys-color-outline);
 }
 
-/* Subtle animated gradient background */
-.bg-gradient-mesh {
-  background-color: var(--bg-base);
-  background-image:
-    radial-gradient(ellipse at 20% 50%, rgba(99, 102, 241, 0.08) 0%, transparent 50%),
-    radial-gradient(ellipse at 80% 20%, rgba(20, 184, 166, 0.06) 0%, transparent 50%);
+/* Material Design 3 Cards */
+.m3-card-elevated {
+  background-color: var(--md-sys-color-surface);
+  border: 1px solid var(--md-sys-color-border-subtle);
+  border-radius: 1.25rem; /* 20px */
+  box-shadow: var(--md-elevation-1);
+  transition: box-shadow 0.2s cubic-bezier(0.2, 0, 0, 1), background-color 0.2s ease, border-color 0.2s ease;
 }
 
-/* Glassmorphism card */
+.m3-card-elevated:hover {
+  box-shadow: var(--md-elevation-2);
+}
+
+.m3-card-filled {
+  background-color: var(--md-sys-color-surface-container);
+  border-radius: 1.25rem;
+  border: none;
+}
+
+.m3-card-outlined {
+  background-color: var(--md-sys-color-surface);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 1.25rem;
+}
+
+/* Glass card alias to keep backward compatibility */
 .glass-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border-subtle);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background-color: var(--md-sys-color-surface);
+  border: 1px solid var(--md-sys-color-border-subtle);
+  border-radius: 1.25rem;
+  box-shadow: var(--md-elevation-1);
+}
+
+/* Material 3 State Ripple Layer */
+.m3-state-layer {
+  position: relative;
+  overflow: hidden;
+}
+.m3-state-layer::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: currentColor;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+  pointer-events: none;
+}
+.m3-state-layer:hover::after {
+  opacity: 0.08;
+}
+.m3-state-layer:active::after {
+  opacity: 0.12;
 }

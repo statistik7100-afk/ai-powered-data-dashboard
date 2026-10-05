@@ -1,26 +1,49 @@
 "use client";
 
 import { useState, useRef, useCallback, DragEvent, ChangeEvent } from "react";
+import { useDashboard } from "@/context/DashboardContext";
 
 interface CsvUploaderProps {
   onFileAccepted: (file: File) => void;
 }
 
 export default function CsvUploader({ onFileAccepted }: CsvUploaderProps) {
+  const { language } = useDashboard();
   const [isDragging, setIsDragging] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  const t = {
+    id: {
+      invalidFile: "Tipe file tidak valid. Harap unggah file .csv saja.",
+      release: "Lepaskan untuk mengunggah",
+      dragDrop: "Seret & lepas file CSV Anda di sini",
+      or: "atau",
+      browse: "pilih file dari perangkat",
+      limit: "Format .csv saja, hingga 50MB",
+      badges: ["Format CSV", "Encoding UTF-8", "Maks 50MB"]
+    },
+    en: {
+      invalidFile: "Invalid file type. Please upload a .csv file only.",
+      release: "Release to upload",
+      dragDrop: "Drag & drop your CSV file here",
+      or: "or",
+      browse: "browse from device",
+      limit: ".csv files only, up to 50MB",
+      badges: ["CSV Format", "UTF-8 Encoding", "Up to 50MB"]
+    }
+  }[language];
 
   const validateAndAccept = useCallback(
     (file: File) => {
       setError(null);
       if (!file.name.toLowerCase().endsWith(".csv")) {
-        setError("Invalid file type. Please upload a .csv file only.");
+        setError(t.invalidFile);
         return;
       }
       onFileAccepted(file);
     },
-    [onFileAccepted]
+    [onFileAccepted, t.invalidFile]
   );
 
   /* ── Drag Handlers ─────────────────────────────────────────── */
@@ -61,7 +84,7 @@ export default function CsvUploader({ onFileAccepted }: CsvUploaderProps) {
 
   return (
     <div className="w-full max-w-2xl mx-auto">
-      {/* Drop Zone */}
+      {/* Drop Zone (M3 Outlined / Filled Container) */}
       <div
         id="csv-dropzone"
         role="button"
@@ -74,31 +97,31 @@ export default function CsvUploader({ onFileAccepted }: CsvUploaderProps) {
         onKeyDown={(e) => e.key === "Enter" && openFilePicker()}
         className={[
           "relative flex flex-col items-center justify-center gap-4",
-          "rounded-2xl border-2 border-dashed px-8 py-14",
+          "rounded-3xl border-2 border-dashed px-8 py-12 sm:py-16",
           "cursor-pointer select-none outline-none",
           "transition-all duration-200",
           isDragging
-            ? "border-indigo-500 bg-indigo-500/10 scale-[1.01] shadow-lg shadow-indigo-500/10"
-            : "border-white/10 bg-white/[0.02] hover:border-white/20 hover:bg-white/[0.04]",
+            ? "border-[var(--md-sys-color-primary)] bg-[var(--md-sys-color-primary-container)]/30 scale-[1.01] shadow-md"
+            : "border-[var(--md-sys-color-outline-variant)] bg-[var(--md-sys-color-surface-container-low)] hover:border-[var(--md-sys-color-primary)] hover:bg-[var(--md-sys-color-surface-container)]",
         ].join(" ")}
       >
-        {/* Animated Icon */}
+        {/* Animated Icon Container (M3 Tonal Circle) */}
         <div
           className={[
             "flex h-16 w-16 items-center justify-center rounded-2xl",
-            "border transition-all duration-200",
+            "transition-all duration-200",
             isDragging
-              ? "border-indigo-500/50 bg-indigo-500/20 text-indigo-400"
-              : "border-white/10 bg-white/5 text-slate-500",
+              ? "bg-[var(--md-sys-color-primary)] text-white scale-110 shadow-sm"
+              : "bg-[var(--md-sys-color-surface-container-high)] text-[var(--md-sys-color-primary)]",
           ].join(" ")}
         >
           {isDragging ? (
-            /* Hovering icon */
+            /* Hovering bounce icon */
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
               fill="currentColor"
-              className="h-7 w-7 animate-bounce"
+              className="h-8 w-8 animate-bounce"
             >
               <path
                 fillRule="evenodd"
@@ -107,14 +130,14 @@ export default function CsvUploader({ onFileAccepted }: CsvUploaderProps) {
               />
             </svg>
           ) : (
-            /* Default icon */
+            /* Google Material style file upload icon */
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
-              strokeWidth={1.5}
+              strokeWidth={1.75}
               stroke="currentColor"
-              className="h-7 w-7"
+              className="h-8 w-8"
             >
               <path
                 strokeLinecap="round"
@@ -126,36 +149,30 @@ export default function CsvUploader({ onFileAccepted }: CsvUploaderProps) {
         </div>
 
         {/* Text */}
-        <div className="text-center">
-          <p className="text-sm font-semibold text-slate-200">
-            {isDragging ? "Release to upload" : "Drag & drop your CSV here"}
+        <div className="text-center px-4">
+          <p className="text-base font-semibold text-[var(--md-sys-color-on-surface)]">
+            {isDragging ? t.release : t.dragDrop}
           </p>
-          <p className="mt-1 text-xs text-slate-500">
-            or{" "}
-            <span className="text-indigo-400 underline underline-offset-2">
-              click to browse
+          <p className="mt-1 text-xs text-[var(--md-sys-color-on-surface-variant)]">
+            {t.or}{" "}
+            <span className="font-semibold text-[var(--md-sys-color-primary)] underline underline-offset-4">
+              {t.browse}
             </span>{" "}
-            — .csv files only, up to 50MB
+            &mdash; {t.limit}
           </p>
         </div>
 
-        {/* Badge row */}
-        <div className="flex items-center gap-3 text-xs text-slate-600">
-          {["CSV", "UTF-8", "Up to 50MB"].map((tag) => (
+        {/* M3 Assist Chips */}
+        <div className="flex flex-wrap items-center justify-center gap-2 mt-2">
+          {t.badges.map((tag) => (
             <span
               key={tag}
-              className="rounded-full border border-white/8 bg-white/5 px-2.5 py-0.5"
+              className="rounded-full border border-[var(--md-sys-color-outline-variant)] bg-[var(--md-sys-color-surface)] px-3 py-1 text-[11px] font-medium text-[var(--md-sys-color-on-surface-variant)] shadow-2xs"
             >
               {tag}
             </span>
           ))}
         </div>
-
-        {/* Subtle corner accents */}
-        <span className="absolute left-3 top-3 h-4 w-4 rounded-tl-md border-l-2 border-t-2 border-indigo-500/30" />
-        <span className="absolute right-3 top-3 h-4 w-4 rounded-tr-md border-r-2 border-t-2 border-indigo-500/30" />
-        <span className="absolute bottom-3 left-3 h-4 w-4 rounded-bl-md border-b-2 border-l-2 border-indigo-500/30" />
-        <span className="absolute bottom-3 right-3 h-4 w-4 rounded-br-md border-b-2 border-r-2 border-indigo-500/30" />
       </div>
 
       {/* Hidden file input */}
@@ -169,18 +186,18 @@ export default function CsvUploader({ onFileAccepted }: CsvUploaderProps) {
         aria-hidden="true"
       />
 
-      {/* Error Message */}
+      {/* Error Message (M3 Error Alert) */}
       {error && (
         <div
           id="csv-upload-error"
           role="alert"
-          className="mt-3 flex items-center gap-2 rounded-lg border border-red-500/20 bg-red-500/5 px-4 py-2.5 text-xs text-red-400"
+          className="mt-4 flex items-center gap-3 rounded-2xl border border-[var(--md-sys-color-error)]/30 bg-[var(--md-sys-color-error-container)] px-5 py-3 text-xs text-[var(--md-sys-color-on-error-container)]"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 20 20"
             fill="currentColor"
-            className="h-4 w-4 flex-shrink-0"
+            className="h-5 w-5 flex-shrink-0 text-[var(--md-sys-color-error)]"
           >
             <path
               fillRule="evenodd"
@@ -188,7 +205,7 @@ export default function CsvUploader({ onFileAccepted }: CsvUploaderProps) {
               clipRule="evenodd"
             />
           </svg>
-          {error}
+          <span className="font-medium">{error}</span>
         </div>
       )}
     </div>
